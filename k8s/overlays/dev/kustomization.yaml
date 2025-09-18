@@ -4,19 +4,22 @@ kind: Kustomization
 namespace: microservices-app-dev
 
 resources:
-  - ../../base
+- ../../base
 
 patches:
-  - path: patch-deployment.yaml
+- path: patch-deployment.yaml
 
 labels:
-  - pairs:
-      environment: dev
+- pairs:
+    environment: dev
 
 images:
-  - name: api-service
-    newTag: dev
-  - name: worker-service
-    newTag: dev
-  - name: frontend-service
-    newTag: dev
+- name: api-service
+  newName: salilkayastha/api-service
+  newTag: main-dd1220e3
+- name: frontend-service
+  newName: salilkayastha/frontend-service
+  newTag: main-dd1220e3
+- name: worker-service
+  newName: salilkayastha/worker-service
+  newTag: main-dd1220e3
