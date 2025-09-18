@@ -1,0 +1,24 @@
+services:
+  api-service:
+    volumes:
+      - ./api-service/src:/app/src
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
+  frontend-service:
+    volumes:
+      - ./frontend-service/src:/app/src
+      - ./frontend-service/public:/app/public
+    environment:
+      - NODE_ENV=development
+    command: npm start
+    ports:
+      - "3000:3000"  # Override to use React dev server port
+
+  worker-service:
+    volumes:
+      - ./worker-service/src:/app/src
+    environment:
+      - PYTHONPATH=/app/src
+      - LOG_LEVEL=DEBUG

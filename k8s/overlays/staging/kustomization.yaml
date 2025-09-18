@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: microservices-app-staging
+
+resources:
+  - ../../base
+
+patches:
+  - path: patch-deployment.yaml
+
+labels:
+  - pairs:
+      environment: staging
+
+images:
+  - name: api-service
+    newTag: staging
+  - name: worker-service
+    newTag: staging
+  - name: frontend-service
+    newTag: staging
