@@ -8,6 +8,7 @@ resources:
 
 patches:
   - path: patch-deployment.yaml
+  - path: patch-service.yaml
 
 labels:
   - pairs:
@@ -15,8 +16,11 @@ labels:
 
 images:
   - name: api-service
+    newName: salilkayastha/api-service
     newTag: staging
   - name: worker-service
+    newName: salilkayastha/worker-service
     newTag: staging
   - name: frontend-service
+    newName: salilkayastha/frontend-service
     newTag: staging
