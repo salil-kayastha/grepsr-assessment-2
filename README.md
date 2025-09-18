@@ -278,13 +278,13 @@ Each service has defined:
 
 ```bash
 # Check database pod status
-kubectl get pods -l app=db -n microservices-app-dev
+kubectl get pods -l app=db -n microservices-dev
 
 # Check database logs
-kubectl logs -l app=db -n microservices-app-dev
+kubectl logs -l app=db -n microservices-dev
 
 # Test database connectivity
-kubectl exec -it <api-pod> -n microservices-app-dev -- nc -zv db-service 5432
+kubectl exec -it <api-pod> -n microservices-dev -- nc -zv db-service 5432
 ```
 
 #### API Service Issues
@@ -294,10 +294,10 @@ kubectl exec -it <api-pod> -n microservices-app-dev -- nc -zv db-service 5432
 curl http://localhost:30001/api/health
 
 # Check API logs
-kubectl logs -l app=api -n microservices-app-dev
+kubectl logs -l app=api -n microservices-dev
 
 # Check service endpoints
-kubectl get endpoints api-service -n microservices-app-dev
+kubectl get endpoints api-service -n microservices-dev
 ```
 
 #### Frontend Issues
@@ -307,7 +307,7 @@ kubectl get endpoints api-service -n microservices-app-dev
 curl http://localhost:30000
 
 # Check nginx configuration
-kubectl exec -it <frontend-pod> -n microservices-app-dev -- cat /etc/nginx/conf.d/default.conf
+kubectl exec -it <frontend-pod> -n microservices-dev -- cat /etc/nginx/conf.d/default.conf
 ```
 
 ### Performance Issues
@@ -316,7 +316,7 @@ kubectl exec -it <frontend-pod> -n microservices-app-dev -- cat /etc/nginx/conf.
 
 ```bash
 # Check database metrics
-kubectl exec -it <db-pod> -n microservices-app-dev -- psql -U postgres -d appdb -c "
+kubectl exec -it <db-pod> -n microservices-dev -- psql -U postgres -d appdb -c "
 SELECT 
     schemaname,
     tablename,
@@ -327,7 +327,7 @@ FROM pg_stats
 WHERE schemaname = 'public';"
 
 # Check slow queries
-kubectl exec -it <db-pod> -n microservices-app-dev -- psql -U postgres -d appdb -c "
+kubectl exec -it <db-pod> -n microservices-dev -- psql -U postgres -d appdb -c "
 SELECT query, mean_time, calls 
 FROM pg_stat_statements 
 ORDER BY mean_time DESC 
@@ -338,13 +338,13 @@ LIMIT 10;"
 
 ```bash
 # Check resource usage
-kubectl top pods -n microservices-app-dev
+kubectl top pods -n microservices-dev
 
 # Check HPA status (if configured)
-kubectl get hpa -n microservices-app-dev
+kubectl get hpa -n microservices-dev
 
 # Monitor application metrics
-kubectl port-forward svc/prometheus 9090:9090 -n microservices-app-dev
+kubectl port-forward svc/prometheus 9090:9090 -n microservices-dev
 # Access Prometheus at http://localhost:9090
 ```
 
@@ -352,16 +352,16 @@ kubectl port-forward svc/prometheus 9090:9090 -n microservices-app-dev
 
 ```bash
 # Get all resources
-kubectl get all -n microservices-app-dev
+kubectl get all -n microservices-dev
 
 # Describe problematic pods
-kubectl describe pod <pod-name> -n microservices-app-dev
+kubectl describe pod <pod-name> -n microservices-dev
 
 # Check events
-kubectl get events -n microservices-app-dev --sort-by='.lastTimestamp'
+kubectl get events -n microservices-dev --sort-by='.lastTimestamp'
 
 # Access pod shell
-kubectl exec -it <pod-name> -n microservices-app-dev -- /bin/sh
+kubectl exec -it <pod-name> -n microservices-dev -- /bin/sh
 ```
 
 ## Security

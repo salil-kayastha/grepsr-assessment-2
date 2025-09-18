@@ -47,6 +47,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./api-service
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ env.DOCKER_USERNAME }}/api-service:${{ steps.meta.outputs.tag }}
@@ -58,6 +59,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./frontend-service
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ env.DOCKER_USERNAME }}/frontend-service:${{ steps.meta.outputs.tag }}
@@ -69,6 +71,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./worker-service
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ env.DOCKER_USERNAME }}/worker-service:${{ steps.meta.outputs.tag }}

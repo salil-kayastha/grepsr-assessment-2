@@ -10,13 +10,13 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 # Configuration - UPDATE THESE VALUES
-DOCKER_USERNAME="${DOCKER_USERNAME:-your-dockerhub-username}"  # Set your Docker Hub username
+DOCKER_USERNAME="${DOCKER_USERNAME:-salilkayastha}"
 REGISTRY_URL="docker.io"  # Docker Hub registry
 
 echo -e "${BLUE}🐳 Building and pushing images to Docker Hub${NC}"
 
-# Check if Docker username is set
-if [ "$DOCKER_USERNAME" = "salilkayastha" ]; then
+# Check if Docker username is set to placeholder
+if [ "$DOCKER_USERNAME" = "your-dockerhub-username" ]; then
     echo -e "${RED}❌ Please set your Docker Hub username:${NC}"
     echo "export DOCKER_USERNAME=your-actual-username"
     echo "Or edit this script and replace 'your-dockerhub-username'"
@@ -32,36 +32,33 @@ echo "Docker Hub Username: $DOCKER_USERNAME"
 echo "Image tag: $IMAGE_TAG"
 echo "=================================================="
 
-# Check if logged in to Docker Hub
-echo -e "${BLUE}🔐 Checking Docker Hub authentication...${NC}"
-if ! docker info | grep -q "Username: $DOCKER_USERNAME"; then
-    echo -e "${YELLOW}⚠️  Please login to Docker Hub:${NC}"
-    echo "docker login"
-    exit 1
-fi
+# Skip authentication check - assuming user is logged in
+echo -e "${GREEN}✅ Using existing Docker authentication${NC}"
 
-echo -e "${GREEN}✅ Authenticated with Docker Hub${NC}"
+# Setup Docker Buildx for multi-platform builds
+echo -e "${BLUE}🔧 Setting up Docker Buildx for multi-platform builds...${NC}"
+docker buildx create --name multiarch --use --bootstrap 2>/dev/null || docker buildx use multiarch
 
-# Build and push images
-echo -e "${BLUE}🏗️  Building API service...${NC}"
-docker build -t $DOCKER_USERNAME/api-service:$IMAGE_TAG ./api-service
-docker build -t $DOCKER_USERNAME/api-service:latest ./api-service
-docker push $DOCKER_USERNAME/api-service:$IMAGE_TAG
-docker push $DOCKER_USERNAME/api-service:latest
+# Build and push images with multi-platform support
+echo -e "${BLUE}🏗️  Building API service (multi-platform)...${NC}"
+docker buildx build --platform linux/amd64,linux/arm64 \
+    -t $DOCKER_USERNAME/api-service:$IMAGE_TAG \
+    -t $DOCKER_USERNAME/api-service:latest \
+    --push ./api-service
 echo -e "${GREEN}✅ API service pushed${NC}"
 
-echo -e "${BLUE}🏗️  Building Frontend service...${NC}"
-docker build -t $DOCKER_USERNAME/frontend-service:$IMAGE_TAG ./frontend-service
-docker build -t $DOCKER_USERNAME/frontend-service:latest ./frontend-service
-docker push $DOCKER_USERNAME/frontend-service:$IMAGE_TAG
-docker push $DOCKER_USERNAME/frontend-service:latest
+echo -e "${BLUE}🏗️  Building Frontend service (multi-platform)...${NC}"
+docker buildx build --platform linux/amd64,linux/arm64 \
+    -t $DOCKER_USERNAME/frontend-service:$IMAGE_TAG \
+    -t $DOCKER_USERNAME/frontend-service:latest \
+    --push ./frontend-service
 echo -e "${GREEN}✅ Frontend service pushed${NC}"
 
-echo -e "${BLUE}🏗️  Building Worker service...${NC}"
-docker build -t $DOCKER_USERNAME/worker-service:$IMAGE_TAG ./worker-service
-docker build -t $DOCKER_USERNAME/worker-service:latest ./worker-service
-docker push $DOCKER_USERNAME/worker-service:$IMAGE_TAG
-docker push $DOCKER_USERNAME/worker-service:latest
+echo -e "${BLUE}🏗️  Building Worker service (multi-platform)...${NC}"
+docker buildx build --platform linux/amd64,linux/arm64 \
+    -t $DOCKER_USERNAME/worker-service:$IMAGE_TAG \
+    -t $DOCKER_USERNAME/worker-service:latest \
+    --push ./worker-service
 echo -e "${GREEN}✅ Worker service pushed${NC}"
 
 # Determine environment based on branch

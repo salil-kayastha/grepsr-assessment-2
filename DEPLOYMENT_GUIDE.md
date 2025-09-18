@@ -120,16 +120,16 @@ make rollback ENV=production
 ### Debug Commands
 ```bash
 # Check pod status
-kubectl get pods -n microservices-app-dev
+kubectl get pods -n microservices-dev
 
 # View logs
-kubectl logs -l app=api -n microservices-app-dev
+kubectl logs -l app=api -n microservices-dev
 
 # Describe resources
-kubectl describe deployment api-deployment -n microservices-app-dev
+kubectl describe deployment api-deployment -n microservices-dev
 
 # Port forward for testing
-kubectl port-forward svc/api-service 3000:3000 -n microservices-app-dev
+kubectl port-forward svc/api-service 3000:3000 -n microservices-dev
 ```
 
 ## Next Steps
