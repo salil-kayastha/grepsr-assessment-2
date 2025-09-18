@@ -16,10 +16,10 @@ labels:
 images:
 - name: api-service
   newName: salilkayastha/api-service
-  newTag: main-7cbe81e2
+  newTag: main-7b36ebb6
 - name: frontend-service
   newName: salilkayastha/frontend-service
-  newTag: main-7cbe81e2
+  newTag: main-7b36ebb6
 - name: worker-service
   newName: salilkayastha/worker-service
-  newTag: main-7cbe81e2
+  newTag: main-7b36ebb6
