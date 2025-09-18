@@ -13,6 +13,8 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write 
     if: github.event_name == 'push'
 
     outputs:
@@ -77,6 +79,8 @@ jobs:
   update-manifests:
     needs: build-and-push
     runs-on: ubuntu-latest
+    permissions:
+      contents: write 
     if: github.event_name == 'push'
 
     steps:
@@ -126,6 +130,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write 
 
     steps:
       - name: Checkout code
@@ -167,6 +173,8 @@ jobs:
   deploy-notification:
     needs: [build-and-push, update-manifests]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write 
     if: github.event_name == 'push' && always()
 
     steps:
