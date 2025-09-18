@@ -149,7 +149,8 @@ jobs:
       - name: Test Frontend service
         run: |
           cd frontend-service
-          npm ci
+          # Use npm install instead of npm ci to handle lock file issues
+          npm install
           npm test -- --coverage --watchAll=false
 
       - name: Setup Python
